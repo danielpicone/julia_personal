@@ -1,0 +1,14 @@
+FFLAGS = -fPIC -O4 -fopenmp
+CFLAGS = -fPIC -O4
+
+libelliptic.so: elliptic.o C_elliptic.o
+	gfortran -fopenmp -shared -o $@ $^
+
+elliptic.o: elliptic.f08
+	gfortran $(FFLAGS) -c $<
+
+C_elliptic.o: C_elliptic.c
+	gcc $(CFLAGS) -c $<
+
+clean:
+	rm -f *.o *.so *.mod

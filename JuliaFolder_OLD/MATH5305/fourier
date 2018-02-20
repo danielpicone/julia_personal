@@ -1,0 +1,6 @@
+# Calculate the Fourier series of a function
+
+# Define the function which is periodic with period L
+
+f(x) = x
+L = π

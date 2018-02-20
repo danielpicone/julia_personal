@@ -1,0 +1,10 @@
+CFLAGS = -fPIC -O2
+
+libelliptic.so: C_elliptic.o
+	clang -o $@ -shared $<
+
+C_elliptic.o: C_elliptic.c
+	clang $(CFLAGS) -c $<
+
+clean:
+	rm -f *.o *.so *.mod
