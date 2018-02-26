@@ -15,35 +15,35 @@ bounds = Array{Float64}(dim,2)
 bounds[:,1] = -4.5*ones(dim)
 bounds[:,2] = 4.5*ones(dim)
 
-# function constraints(x...; bounds = [-Inf*ones(dim) Inf*ones(dim)])
-#     # First the equality constraints
-#     # These are in the form g(x) = 0
-#     numeqconstraints = 0
-#     eq = Array{Float64}(numeqconstraints)
-#     if numeqconstraints!=0
-#         eq[1] = x[1]^2-1
-#         # eq[2] = sin(x[1])
-#     end
-#     # Now the inequality constraints
-#     # These are in the form g(x) ≤ 0
-#     numineqconstraints = 0
-#     ineq = Array{Float64}(numineqconstraints)
-#     if numineqconstraints!=0
-#         ineq[1] = 0.25 - x[2]
-#         # ineq[1] = 1 - (x[2]^2 * x[3])/(71785*x[1]^4)
-#         # ineq[2] = (4*x[2]^2 -x[1]*x[2])/(12566*(x[1]^3 * x[2] - x[1]^4)) + 1/(5108*x[1]^2) - 1
-#         # ineq[3] = 1 - (140.45*x[1])/(x[2]^2 * x[3])
-#         # ineq[4] = (x[1] + x[2])/1.5 - 1
-#     end
-#     lbbound = Array{Float64}(dim)
-#     ubbound = Array{Float64}(dim)
-#     for k=1:dim
-#         lbbound[k] = bounds[k,1] - x[k]
-#         ubbound[k] = -bounds[k,2] + x[k]
-#     end
-#
-#     return 10000000*(sum(eq.^2)+sum(max.(ineq,0)) + sum(max.(lbbound,0) + max.(ubbound,0)))
-# end
+function constraints(x...; bounds = [-Inf*ones(dim) Inf*ones(dim)])
+    # First the equality constraints
+    # These are in the form g(x) = 0
+    numeqconstraints = 0
+    eq = Array{Float64}(numeqconstraints)
+    if numeqconstraints!=0
+        eq[1] = x[1]^2-1
+        # eq[2] = sin(x[1])
+    end
+    # Now the inequality constraints
+    # These are in the form g(x) ≤ 0
+    numineqconstraints = 0
+    ineq = Array{Float64}(numineqconstraints)
+    if numineqconstraints!=0
+        ineq[1] = 0.25 - x[2]
+        # ineq[1] = 1 - (x[2]^2 * x[3])/(71785*x[1]^4)
+        # ineq[2] = (4*x[2]^2 -x[1]*x[2])/(12566*(x[1]^3 * x[2] - x[1]^4)) + 1/(5108*x[1]^2) - 1
+        # ineq[3] = 1 - (140.45*x[1])/(x[2]^2 * x[3])
+        # ineq[4] = (x[1] + x[2])/1.5 - 1
+    end
+    lbbound = Array{Float64}(dim)
+    ubbound = Array{Float64}(dim)
+    for k=1:dim
+        lbbound[k] = bounds[k,1] - x[k]
+        ubbound[k] = -bounds[k,2] + x[k]
+    end
+
+    return 10000000*(sum(eq.^2)+sum(max.(ineq,0)) + sum(max.(lbbound,0) + max.(ubbound,0)))
+end
 
 function intensity(a,b,γ; β0 = 1, βmin = 0.3)
     return max(β0*exp(-γ*norm(a-b)^2),βmin)
