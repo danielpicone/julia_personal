@@ -107,7 +107,7 @@ function (nn::neural_network)(W)
         end
         # output .= z
         output .= exp.(z)/(sum(exp.(z)))
-        # loss[point] = L(output, nn.output[point,:])
+        loss[point] = L(output, nn.output[point,:])
         # loss[point] = cross_entropy(output, nn.output[point,:])
     end
 
@@ -162,7 +162,7 @@ end
 
 input_layer = 1
 
-layers = [input_layer,40,40,1]
+layers = [input_layer,30,30,1]
 
 
 points = 100
@@ -180,12 +180,12 @@ training_data = 3*(rand(points,input_layer)-0.5)
 training_data = [training_data zeros(points,biggest_layer-input_layer)]
 training_data_output = zeros(points,biggest_layer)
 for i=1:points
-    if norm(training_data[i,1]) < 0.8
-        training_data_output[i,1] = 1.0
-    else
-        training_data_output[i,2] = 1.0
-    end
-    # training_data_output[i,1] = sin(training_data[i,1])
+    # if norm(training_data[i,1]) < 0.8
+    #     training_data_output[i,1] = 1.0
+    # else
+    #     training_data_output[i,2] = 1.0
+    # end
+    training_data_output[i,1] = sin(training_data[i,1])
 end
 
 nn = neural_network(training_data, training_data_output, layers)
@@ -203,12 +203,12 @@ test_data = 3*rand(points,input_layer)-1
 test_data = [test_data zeros(points,biggest_layer-input_layer)]
 test_data_output = zeros(points,biggest_layer)
 for i=1:points
-    if test_data[i,1] < 0.7
-        test_data_output[i,1] = 1.0
-    else
-        test_data_output[i,2] = 1.0
-    end
-    # test_data_output[i,1] = sin(test_data[i,1])
+    # if test_data[i,1] < 0.7
+    #     test_data_output[i,1] = 1.0
+    # else
+    #     test_data_output[i,2] = 1.0
+    # end
+    test_data_output[i,1] = sin(test_data[i,1])
 end
 best_network = neural_network_eval(test_data, layers)
 final_output = best_network(weights)
