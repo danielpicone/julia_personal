@@ -4,10 +4,12 @@ include("setup.jl")
 using cvrp_setup
 using JuMP
 using CPLEX
+using LightGraphs
+using PlotRecipes
 
-n = 10
-K = 4
-
+n = 27
+K = 20
+srand(10)
 c,demands,capacity = create_inputs(n)
 
 cvrp = Model(solver = CplexSolver())
@@ -31,6 +33,16 @@ for i=0:n+1
     for j=0:n+1
         @constraint(cvrp, y[j] >= y[i] + demands[j]*x[i,j] - capacity*(1-x[i,j]))
     end
-    # @constraint(cvrp, demands[i] <= y[i] <= capacity)
+    @constraint(cvrp, x[i,i]==0)
 end
 solve(cvrp)
+
+# xmat = getvalue(x)
+# adj_graph = Array{Int64}(n+2,n+2)
+# for i=0:n+1
+#     for j=0:n+1
+#         adj_graph[i+1,j+1] = xmat[i,j]
+#     end
+# end
+#
+# graphplot(sparse(adj_graph),names=0:n)

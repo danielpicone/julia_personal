@@ -5,7 +5,7 @@ export create_inputs
 
 using OffsetArrays
 
-srand(100)
+# srand(100)
 function create_inputs(n)
 
     # First create random points
@@ -28,7 +28,7 @@ function create_inputs(n)
     demands[1] = 0
     demands[end] = 0
     demands = OffsetArray(demands,0:n+1)
-    capacity = 30
+    capacity = 10
     return c,demands,capacity
 end
 
